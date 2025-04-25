@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john.doe@acme.com",
+    "password": "hashed_password_123",
+    "role": "Admin",
+    "status": "Active",
+    "tenantId": 1
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "email": "jane.smith@acme.com",
+    "password": "hashed_password_456",
+    "role": "Manager",
+    "status": "Active",
+    "tenantId": 1
+  },
+  {
+    "id": 3,
+    "name": "Bob Johnson",
+    "email": "bob.johnson@acme.com",
+    "password": "hashed_password_789",
+    "role": "Viewer",
+    "status": "Inactive",
+    "tenantId": 1
+  },
+  {
+    "id": 4,
+    "name": "Alice Brown",
+    "email": "alice.brown@globex.com",
+    "password": "hashed_password_012",
+    "role": "Admin",
+    "status": "Active",
+    "tenantId": 2
+  },
+  {
+    "id": 5,
+    "name": "Charlie Davis",
+    "email": "charlie.davis@globex.com",
+    "password": "hashed_password_345",
+    "role": "Manager",
+    "status": "Inactive",
+    "tenantId": 2
+  },
+  {
+    "id": 6,
+    "name": "Emma Wilson",
+    "email": "emma.wilson@globex.com",
+    "password": "hashed_password_678",
+    "role": "Viewer",
+    "status": "Active",
+    "tenantId": 2
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Acme Corp",
+    "theme": "dark",
+    "status": "Subscribed"
+  },
+  {
+    "id": 2,
+    "name": "Beta Ltd",
+    "theme": "light",
+    "status": "Unsubscribed"
+  }
+]
