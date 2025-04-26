@@ -1,19 +1,53 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Label } from "@radix-ui/react-label";
+import { cn } from "../lib/utils";
+import { Button } from "./ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./ui/card";
+import { Input } from "./ui/input";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { checkWhoLoggedIn } from "../api/auth";
+import { delay } from "../utils/functions";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      setEmail(e.target.value);
+    }
+  }
+
+  const handlePasswordInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      setPassword(e.target.value);
+    }
+  }
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      if (email && password.length > 4) {
+        await delay(1500);
+        const user = await checkWhoLoggedIn(email, password);
+        toast.success(`Welcome back, ${user.name}!`);
+      } else {
+        throw new Error("Please fill in all fields correctly");
+      }
+    } catch (error: unknown) {
+      toast.error((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -24,7 +58,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
@@ -32,6 +66,7 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
+                  onChange={handleEmailInputChange}
                   required
                 />
               </div>
@@ -45,10 +80,11 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" onChange={handlePasswordInputChange} required />
               </div>
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
+                <Button type="submit" disabled={loading} className="w-full disabled:cursor-not-allowed">
+                  {loading && <Loader2 className="animate-spin" />}
                   Login
                 </Button>
                 <Button variant="outline" className="w-full">
