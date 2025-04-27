@@ -12,7 +12,7 @@ export interface User {
     tenantId: number;
 }
 
-export interface Tenants {
+export interface Tenant {
     id: number;
     name: string;
     theme: string;

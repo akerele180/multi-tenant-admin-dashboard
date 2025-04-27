@@ -1,0 +1,1 @@
+export { tenantThemes } from "./tenantThemes";

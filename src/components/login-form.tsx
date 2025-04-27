@@ -8,6 +8,8 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { checkWhoLoggedIn } from "../api/auth";
 import { delay } from "../utils/functions";
+import { useAuth } from "../hooks/useAuth";
+import { getTenantSettings } from "../services/tenantService";
 
 export function LoginForm({
   className,
@@ -15,7 +17,9 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const { dispatch, state } = useAuth();
 
   const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
@@ -31,22 +35,29 @@ export function LoginForm({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    
+    dispatch({ type: "SET_LOADING", payload: true });
+    setError('');
+
     try {
-      if (email && password.length > 4) {
-        await delay(1500);
-        const user = await checkWhoLoggedIn(email, password);
-        toast.success(`Welcome back, ${user.name}!`);
-      } else {
-        throw new Error("Please fill in all fields correctly");
-      }
+      await delay(1500);
+      const user = await checkWhoLoggedIn(email, password);
+
+      const tenant = await getTenantSettings(user.tenantId);
+
+      const token = Math.random().toString(36).slice(2);
+      const expiresAt = Date.now() + 1000 * 60 * 5; 
+
+      const payload = { user, tenant, token, expiresAt, loading: true };
+      localStorage.setItem("auth", JSON.stringify(payload));
+      toast.success("Login successful");
+      dispatch({ type: "LOGIN", payload });
     } catch (error: unknown) {
+      setError((error as Error).message);
       toast.error((error as Error).message);
     } finally {
-      setLoading(false);
+      dispatch({ type: "SET_LOADING", payload: false });
     }
-  }
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -55,6 +66,11 @@ export function LoginForm({
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
             Enter your email below to login to your account
+            {
+              error.length > 1 && (
+                <span className="block text-center py-2 text-red-500 text-sm">{error}</span>
+              )
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -63,11 +79,13 @@ export function LoginForm({
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
                 <Input
+                  name="email"
                   id="email"
                   type="email"
                   placeholder="m@example.com"
                   onChange={handleEmailInputChange}
                   required
+                  className={`${error.length > 1 && "border-red-500"}`}
                 />
               </div>
               <div className="grid gap-3">
@@ -80,11 +98,18 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" onChange={handlePasswordInputChange} required />
+                <Input
+                  name="password"
+                  id="password"
+                  type="password"
+                  className={`${error.length > 1 && "border-red-500"}`}
+                  onChange={handlePasswordInputChange}
+                  required
+                />
               </div>
               <div className="flex flex-col gap-3">
-                <Button type="submit" disabled={loading} className="w-full disabled:cursor-not-allowed">
-                  {loading && <Loader2 className="animate-spin" />}
+                <Button type="submit" disabled={state.loading} className="w-full disabled:cursor-not-allowed">
+                  {state.loading && <Loader2 className="animate-spin" />}
                   Login
                 </Button>
                 <Button variant="outline" className="w-full">
