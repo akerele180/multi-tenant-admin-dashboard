@@ -29,7 +29,7 @@
   {
     "id": 4,
     "name": "Alice Brown",
-    "email": "alice.brown@globex.com",
+    "email": "alice.brown@beta.com",
     "password": "hashed_password_012",
     "role": "Admin",
     "status": "Active",
@@ -38,7 +38,7 @@
   {
     "id": 5,
     "name": "Charlie Davis",
-    "email": "charlie.davis@globex.com",
+    "email": "charlie.davis@beta.com",
     "password": "hashed_password_345",
     "role": "Manager",
     "status": "Inactive",
@@ -47,7 +47,7 @@
   {
     "id": 6,
     "name": "Emma Wilson",
-    "email": "emma.wilson@globex.com",
+    "email": "emma.wilson@beta.com",
     "password": "hashed_password_678",
     "role": "Viewer",
     "status": "Active",

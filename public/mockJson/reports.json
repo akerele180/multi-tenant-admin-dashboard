@@ -1,0 +1,26 @@
+[
+  {
+    "tenantId": "acme",
+    "month": "January",
+    "activeUsers": 30,
+    "newSignups": 10
+  },
+  {
+    "tenantId": "acme",
+    "month": "February",
+    "activeUsers": 40,
+    "newSignups": 15
+  },
+  {
+    "tenantId": "beta",
+    "month": "January",
+    "activeUsers": 20,
+    "newSignups": 8
+  },
+  {
+    "tenantId": "beta",
+    "month": "February",
+    "activeUsers": 25,
+    "newSignups": 12
+  }
+]

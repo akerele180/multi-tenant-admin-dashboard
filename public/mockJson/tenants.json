@@ -3,12 +3,14 @@
     "id": 1,
     "name": "Acme Corp",
     "theme": "dark",
-    "status": "Subscribed"
+    "status": "Subscribed",
+    "logo": "/images/logos/acme-logo.png"
   },
   {
     "id": 2,
     "name": "Beta Ltd",
     "theme": "light",
-    "status": "Unsubscribed"
+    "status": "Subscribed",
+    "logo": "/images/logos/beta-logo.png"
   }
 ]

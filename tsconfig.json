@@ -7,9 +7,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*", "/src/*"]
     },
-
+    "moduleResolution": "node",
     "noUnusedLocals": false
   }
 }

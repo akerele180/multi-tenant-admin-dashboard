@@ -10,6 +10,7 @@ import { checkWhoLoggedIn } from "../api/auth";
 import { delay } from "../utils/functions";
 import { useAuth } from "../hooks/useAuth";
 import { getTenantSettings } from "../services/tenantService";
+import { useNavigate } from "react-router";
 
 export function LoginForm({
   className,
@@ -20,6 +21,8 @@ export function LoginForm({
   const [error, setError] = useState("");
 
   const { dispatch, state } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
@@ -45,12 +48,14 @@ export function LoginForm({
       const tenant = await getTenantSettings(user.tenantId);
 
       const token = Math.random().toString(36).slice(2);
-      const expiresAt = Date.now() + 1000 * 60 * 5; 
+      const expiresAt = Date.now() + 1000 * 60 * 60;
 
       const payload = { user, tenant, token, expiresAt, loading: true };
       localStorage.setItem("auth", JSON.stringify(payload));
       toast.success("Login successful");
       dispatch({ type: "LOGIN", payload });
+      navigate("/dashboard", { replace: true });
+
     } catch (error: unknown) {
       setError((error as Error).message);
       toast.error((error as Error).message);
@@ -60,8 +65,9 @@ export function LoginForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+    <div className={cn("flex flex-col")} {...props}>
+      <img security="true" src="/images/babban-gona.png" alt="Logo" className="w-32 h-32 mx-auto" />
+      <Card className="gap-6">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>

@@ -26,7 +26,7 @@ type Action =
 const AuthContext = createContext<{
   state: AuthState;
   dispatch: React.Dispatch<Action>;
-}>({ state: initialState, dispatch: () => {} });
+}>({ state: initialState, dispatch: () => { } });
 
 const authReducer = (state: AuthState, action: Action): AuthState => {
   switch (action.type) {
@@ -45,7 +45,6 @@ const authReducer = (state: AuthState, action: Action): AuthState => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Auto logout when token expires
   useEffect(() => {
     if (state.token && state.expiresAt) {
       const timeout = setTimeout(() => {
