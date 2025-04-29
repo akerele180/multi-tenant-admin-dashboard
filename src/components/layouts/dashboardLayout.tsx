@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 import { AppSidebar } from "../app-sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "../ui/breadcrumb";
+// import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "../ui/breadcrumb";
 import { useAuth } from "../../hooks/useAuth";
 import { Tenant, User } from "../../utils/models";
 import { useTenantTheme } from "../../hooks/useTenantTheme";

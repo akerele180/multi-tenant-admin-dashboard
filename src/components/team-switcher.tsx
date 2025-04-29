@@ -2,7 +2,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "../components/ui/sidebar"
 import { Tenant } from "../utils/models"
 
@@ -11,7 +10,6 @@ export function TeamSwitcher({
 }: {
   tenant: Tenant
 }) {
-  const { isMobile } = useSidebar()
 
   return (
     <SidebarMenu>
