@@ -1,4 +1,3 @@
-import { Settings } from "lucide-react";
 import { Routes, Route, Navigate } from "react-router";
 import DashboardLayout from "../components/layouts/dashboardLayout";
 import { AuthProvider } from "../context/AuthContext";
@@ -7,30 +6,40 @@ import Dashboard from "../pages/dashboard";
 import Subscriptions from "../pages/subscriptions";
 import Transactions from "../pages/transactions";
 import UserManagement from "../pages/userManagement";
+import { Settings } from "lucide-react";
 import ProtectedRoute from "./protectedRoutes";
-
+import Unauthorized from "../pages/Unauthorized";
 
 const AppRoutes = () => {
-
     return (
         <AuthProvider>
             <Routes>
-                <Route path="/" element={<Navigate to={'/login'} replace={true} />} />
+                <Route path="/" element={<Navigate to="/login" replace />} />
                 <Route path="/login" element={<SignIn />} />
-                <Route element={
-                    <ProtectedRoute>
-                        <DashboardLayout />
-                    </ProtectedRoute>
-                }>
+                <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route
+                    element={
+                        <ProtectedRoute>
+                            <DashboardLayout />
+                        </ProtectedRoute>
+                    }
+                >
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/transactions" element={<Transactions />} />
                     <Route path="/subscriptions" element={<Subscriptions />} />
-                    <Route path="/user-management" element={<UserManagement />} />
+                    <Route
+                        path="/user-management"
+                        element={
+                            <ProtectedRoute allowedRoles={["Admin"]}>
+                                <UserManagement />
+                            </ProtectedRoute>
+                        }
+                    />
                 </Route>
             </Routes>
         </AuthProvider>
-    )
-}
+    );
+};
 
 export default AppRoutes;

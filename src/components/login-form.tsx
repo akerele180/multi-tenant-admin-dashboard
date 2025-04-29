@@ -39,23 +39,21 @@ export function LoginForm({
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     dispatch({ type: "SET_LOADING", payload: true });
-    setError('');
+    setError("");
 
     try {
       await delay(1500);
       const user = await checkWhoLoggedIn(email, password);
-
       const tenant = await getTenantSettings(user.tenantId);
 
       const token = Math.random().toString(36).slice(2);
       const expiresAt = Date.now() + 1000 * 60 * 60;
 
-      const payload = { user, tenant, token, expiresAt, loading: true };
+      const payload = { user, tenant, token, expiresAt, loading: false };
       localStorage.setItem("auth", JSON.stringify(payload));
       toast.success("Login successful");
       dispatch({ type: "LOGIN", payload });
       navigate("/dashboard", { replace: true });
-
     } catch (error: unknown) {
       setError((error as Error).message);
       toast.error((error as Error).message);

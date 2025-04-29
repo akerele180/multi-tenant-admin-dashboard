@@ -21,6 +21,7 @@ const initialState: AuthState = {
 type Action =
   | { type: "LOGIN"; payload: AuthState }
   | { type: "LOGOUT" }
+  | { type: "REFRESH_TOKEN"; payload: { token: string; expiresAt: number } }
   | { type: "SET_LOADING"; payload: boolean };
 
 const AuthContext = createContext<{
@@ -35,6 +36,12 @@ const authReducer = (state: AuthState, action: Action): AuthState => {
     case "LOGOUT":
       clearAuthStorage();
       return { ...initialState };
+    case "REFRESH_TOKEN":
+      return {
+        ...state,
+        token: action.payload.token,
+        expiresAt: action.payload.expiresAt,
+      };
     case "SET_LOADING":
       return { ...state, loading: action.payload };
     default:
@@ -45,23 +52,42 @@ const authReducer = (state: AuthState, action: Action): AuthState => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  // Rehydrate
+  useEffect(() => {
+    const data = getAuthFromStorage();
+    if (data) {
+      if (Date.now() < data.expiresAt) {
+        dispatch({ type: "LOGIN", payload: { ...data, loading: false } });
+      } else {
+        dispatch({ type: "LOGOUT" });
+      }
+    }
+  }, []);
+
+  // Auto-refresh
   useEffect(() => {
     if (state.token && state.expiresAt) {
+      const expiresIn = state.expiresAt - Date.now();
+
       const timeout = setTimeout(() => {
-        dispatch({ type: "LOGOUT" });
-      }, state.expiresAt - Date.now());
+        const newToken = Math.random().toString(36);
+        const newExpiresAt = Date.now() + 1000 * 60 * 60;
+
+        const updatedPayload = {
+          ...state,
+          token: newToken,
+          expiresAt: newExpiresAt,
+        };
+        localStorage.setItem("auth", JSON.stringify(updatedPayload));
+        dispatch({
+          type: "REFRESH_TOKEN",
+          payload: { token: newToken, expiresAt: newExpiresAt },
+        });
+      }, expiresIn - 5000); // refresh 5s before expiry
 
       return () => clearTimeout(timeout);
     }
   }, [state.token, state.expiresAt]);
-
-  // Load user from storage
-  useEffect(() => {
-    const data = getAuthFromStorage();
-    if (data && Date.now() < data.expiresAt) {
-      dispatch({ type: "LOGIN", payload: { ...data, loading: false } });
-    }
-  }, []);
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
