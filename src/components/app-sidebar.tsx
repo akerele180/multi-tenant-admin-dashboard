@@ -21,19 +21,16 @@ const data = {
       title: "Dashboard",
       url: "/dashboard",
       icon: LayoutGrid,
-      isActive: true,
     },
     {
       title: "User Management",
       url: "/user-management",
       icon: UserRoundCog,
-
     },
     {
       title: "Subscriptions",
       url: "/subscriptions",
       icon: BookOpen,
-
     },
     {
       title: "Transactions",
@@ -45,7 +42,6 @@ const data = {
       title: "Settings",
       url: "/settings",
       icon: Cog,
-
     },
   ],
 
@@ -57,7 +53,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher tenant={tenant} />
-        {/* {tenant.name} */}
+        {user.role}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
