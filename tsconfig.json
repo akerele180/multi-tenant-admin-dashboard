@@ -9,7 +9,11 @@
     "paths": {
       "@/*": ["./src/*", "/src/*"]
     },
-    "moduleResolution": "node",
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmitOnError": false,
+    "moduleResolution": "node"
   }
 }

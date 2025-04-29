@@ -1,5 +1,3 @@
-import { ReactElement } from "react";
-
 export type Roles = "Admin" | "Manager" | "Viewer";
 export type UserStatus = "Active" | "Inactive";
 export type TenantStatus = "Subscribed" | "Unsubscribed";

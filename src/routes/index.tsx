@@ -2,13 +2,13 @@ import { Routes, Route, Navigate } from "react-router";
 import DashboardLayout from "../components/layouts/dashboardLayout";
 import { AuthProvider } from "../context/AuthContext";
 import SignIn from "../pages/auth/SignIn";
-import Dashboard from "../pages/dashboard";
-import Subscriptions from "../pages/subscriptions";
-import Transactions from "../pages/transactions";
-import UserManagement from "../pages/userManagement";
-import { Settings } from "lucide-react";
+import Dashboard from "../pages/Dashboard";
+import Subscriptions from "../pages/Subscriptions";
+import Transactions from "../pages/Transactions";
+import UserManagement from "../pages/UserManagement";
 import ProtectedRoute from "./protectedRoutes";
 import Unauthorized from "../pages/Unauthorized";
+import Settings from "../pages/Settings";
 
 const AppRoutes = () => {
     return (
